@@ -1,0 +1,41 @@
+<div class="rounded mt-3" style="border: 1px solid grey">
+<table>
+    <tr>
+        <td colspan="5">
+            <h5 class="mt-3 mb-3">Rendelni kívánt ételek:</h5>
+        </td>
+    </tr>
+    <tr *ngFor="let item of order.items" style="margin-left: 2%;">
+        <td>
+            <a routerLink="/food/{{item.food.id}}">
+                <img [src]="item.food.imageUrl" />
+            </a>
+        </td>
+        <td>
+            {{item.food.name}}
+        </td>
+        <td>
+            {{item.food.price | currency: 'Ft '}}
+        </td>
+        <td>
+            {{item.quantity}}
+        </td>
+        <td>
+            {{item.price | currency: 'Ft '}}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+        <td>
+            <strong>
+                Összesen:
+            </strong>
+        </td>
+        <td>
+            <strong>
+                {{order.totalPrice | currency: 'Ft '}}
+            </strong>
+        </td>
+    </tr>
+</table>
+</div>

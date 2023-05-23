@@ -1,0 +1,52 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-primary text-light">
+            Étel felvitele a rendszerbe
+          </div>
+          <div class="card-body">
+            <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+              <div class="form-group mt-3">
+                <label for="name">Név</label>
+                <input type="text" class="form-control" id="name" formControlName="name" required>
+                <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="text-danger">
+                  <div *ngIf="f.name.errors">A név megadása kötelező és legalább 5 karakternek kell lennie</div>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <label for="price">Ár</label>
+                <input type="price" class="form-control" id="price" formControlName="price" required>
+                <div *ngIf="f.price.invalid && (f.price.dirty || f.price.touched)" class="text-danger">
+                  <div *ngIf="f.price.errors">Az ár megadása kötelező</div>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <label for="description">Leírás</label>
+                <textarea class="form-control" id="description" formControlName="description" required></textarea>
+                <div *ngIf="f.description.invalid && (f.description.dirty || f.description.touched)" class="text-danger">
+                  <div *ngIf="f.description.errors">A leírás megadás kötelező</div>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <label for="preparationTime">Elkészítési idő</label>
+                <input type="preparationTime" class="form-control" id="preparationTime" formControlName="preparationTime" required>
+                <div *ngIf="f.preparationTime.invalid && (f.preparationTime.dirty || f.preparationTime.touched)" class="text-danger">
+                  <div *ngIf="f.preparationTime.errors">Az elkészítési idő megadása kötelező</div>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <label for="imageUrl">Kép url</label>
+                <input type="text" class="form-control" id="imageUrl" formControlName="imageUrl" required />
+                <div *ngIf="f.imageUrl.invalid && (f.imageUrl.dirty || f.imageUrl.touched)" class="text-danger">
+                  <div *ngIf="f.imageUrl.errors"> A kép url megadása kötelező</div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary mt-3">Hozzáadás</button>
+            </form>
+          </div>
+        </div>
+      </div>        
+    </div>
+  </div>
+  

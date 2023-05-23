@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-center mt-3">
+    <nav class="navbar bg-body-tertiary align-items-center">
+      <div class="container-fluid">
+        <form class="d-flex" role="search">
+          <input #s class="form-control me-2" type="search" placeholder="Keress a pizzák között" aria-label="Search" (keyup.enter)="search(s.value)" [value]="searched" >
+          <button class="btn btn-outline-primary" type="submit" (click)="search(s.value)">Keresés</button>
+        </form>
+      </div>
+    </nav>
+  </div>
+  

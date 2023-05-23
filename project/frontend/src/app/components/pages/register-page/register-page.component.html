@@ -1,0 +1,64 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-primary text-light">
+          Regisztráció
+        </div>
+        <div class="card-body">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group mt-3">
+              <label for="name">Név</label>
+              <input type="text" class="form-control" id="name" formControlName="name" required>
+              <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="text-danger">
+                <div *ngIf="f.name.errors">A név megadása kötelező és legalább 5 karakternek kell lennie</div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <label for="email">E-mail cím</label>
+              <input type="email" class="form-control" id="email" formControlName="email" required>
+              <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)" class="text-danger">
+                <div *ngIf="f.email.errors">Az érvényes e-mail cím megadása kötelező</div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <label for="password">Jelszó</label>
+              <input type="password" class="form-control" id="password" formControlName="password" required>
+              <div *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)" class="text-danger">
+                <div *ngIf="f.password.errors">A jelszó megadása kötelező, aminek 5 karakternek kell lennie legalább</div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <label for="confirmPassword">Jelszó megerősítése</label>
+              <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" required>
+              <div *ngIf="f.confirmPassword.invalid && (f.confirmPassword.dirty || f.confirmPassword.touched)" class="text-danger">
+                <div *ngIf="f.confirmPassword.errors">A jelszó megerősítése kötelező vagy a jelszavak nem egyeznek</div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <label for="address">Lakcím</label>
+              <textarea class="form-control" id="address" formControlName="address" required></textarea>
+              <div *ngIf="f.address.invalid && (f.address.dirty || f.address.touched)" class="text-danger">
+                <div *ngIf="f.address.errors"> A lakcím megadása kötelező, aminek legalább 10 karakternek kell lennie</div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <label for="phone" >Telefonszám</label>
+              <input type="text" class="form-control" id="phone" formControlName="phone">
+              <div *ngIf="f.phone.invalid && (f.phone.dirty || f.phone.touched)" class="text-danger">
+                <div *ngIf="f.phone.errors"> A telefonszám megadása kötelező, aminek 11 számjegyűnek kell lennie</div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Regisztráció</button>
+            <div class="login mt-3 ms-1">
+              Már regisztráltál? &nbsp;
+              <a routerLink="/login" [queryParams]="{returnUrl: returnUrl}">
+                Jelentkezz be itt
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>        
+  </div>
+</div>

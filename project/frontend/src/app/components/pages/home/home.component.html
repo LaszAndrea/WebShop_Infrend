@@ -1,0 +1,27 @@
+<app-search></app-search>
+<app-not-found
+  [visible]="!foods || !foods.length"
+  resetLinkText="Keresés törlése"
+></app-not-found>
+
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-3 mb-4" *ngFor="let food of foods">
+        <div class="card bg-primary text-light h-100">
+          <img class="card-img-top" [src]="food.imageUrl" [alt]="food.name" [style.backgroundSize]="'cover'">
+          <div class="card-body">
+            <div class="card-contents" style="height: 280px; overflow: hidden;">
+              <h5 class="card-title">{{food.name}}</h5>
+              <h6 class="card-subtitle mb-2 text-white-50">{{food.description}}</h6>
+              <p class="card-text text-right">{{food.price | currency: 'Ft '}}</p>
+              <p  class="card-text text-right">{{getPreparationTime(food).preparationTime}} perc</p>
+            </div>
+            <a *ngIf="isAdmin" routerLink="/update/{{food.id}}" class="btn btn-light" style="position: absolute; bottom: 16px;">Szerkesztés</a>
+            <a *ngIf="!isAdmin && isAuth" routerLink="/food/{{food.id}}" class="btn btn-light" style="position: absolute; bottom: 16px;">Vásárlás</a>
+            <button type="button" *ngIf="!isAuth" routerLink="/food/{{food.id}}" class="btn btn-light" style="position: absolute; bottom: 16px;" disabled>Vásárlás</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

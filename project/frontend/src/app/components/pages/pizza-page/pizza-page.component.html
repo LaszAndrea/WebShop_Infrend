@@ -1,0 +1,33 @@
+<app-not-found
+    [visible]="!food"
+    notFoundMessage="A keresett pizza nem elérhető!"
+    resetLinkText="Vissza a főoldalra"
+></app-not-found>
+
+<div *ngIf="food" class="container position-absolute top-50 start-50 translate-middle mt-1">
+    <img [src]="food.imageUrl" [alt]="food.name"/>
+
+    <div class="details">
+
+        <div class="header">
+            <span class="name">
+                {{food.name}}
+            </span>
+        </div>
+
+        <div class="description">
+            <span>
+                {{food.description}}
+            </span>
+        </div>
+
+        <div class="price">
+            <span>
+                {{food.price | currency: 'Ft '}}
+            </span>
+        </div>
+
+        <button (click)="addToCart()">Kosárba</button>
+
+    </div>
+</div>
