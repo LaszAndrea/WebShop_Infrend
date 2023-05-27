@@ -6,9 +6,6 @@ export class Oven {
   id: number;
 
   @Column()
-  isBusy: boolean;
-
-  @Column()
-  busySince: Date;
+  busyUntil: Date;
 
 }

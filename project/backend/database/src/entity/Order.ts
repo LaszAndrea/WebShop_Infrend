@@ -36,7 +36,7 @@ import { User } from './User';
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   totalPrice: number;
@@ -47,7 +47,7 @@ export class Order {
   @ManyToOne(() => User, user => user.orders)
   user: User;
 
-  @ManyToMany(() => Food, food => food.orders)
+  @ManyToMany(() => Food, food => food.orders, { onDelete: "CASCADE" })
   @JoinTable({
     name: 'order_foods',
     joinColumn: {

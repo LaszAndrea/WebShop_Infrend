@@ -7,14 +7,14 @@
                     <a routerLink="/login">Login</a>
                 </li>
                 <li *ngIf="isAuth" class="menu-container">
-                    <a routerLink="/dashboard">{{user.name}}</a>
+                    <a class="text-light">{{user.name}}</a>
                     <div class="menu">
                         <a *ngIf="isAdmin" routerLink="/add">Étel hozzáadása</a>
-                        <a routerLink="/orders">Rendelések</a>
-                        <a (click)="logout()">Logout</a>
+                        <a *ngIf="!isAdmin" routerLink="/orders">Rendelések</a>
+                        <a (click)="logout()" routerLink="/">Logout</a>
                     </div>
                 </li>
-                <li>
+                <li *ngIf="isAuth && !isAdmin">
                     <a routerLink="/cart-page">
                         Kosár <span *ngIf="cartQuantity">{{cartQuantity}}</span>
                     </a>

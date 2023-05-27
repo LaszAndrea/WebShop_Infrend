@@ -60,7 +60,7 @@ export class RegisterPageComponent implements OnInit {
     };
 
     this.userService.register(this.newUser).subscribe(() => {
-      this.router.navigateByUrl(this.returnUrl);
+      this.router.navigateByUrl('/login');
     });
   }
 }

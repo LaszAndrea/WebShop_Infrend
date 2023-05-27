@@ -21,7 +21,7 @@ export class Food {
   @Column()
   imageUrl!: string;
 
-  @ManyToMany(() => Order, order => order.foods)
+  @ManyToMany(() => Order, order => order.foods, { onDelete: "CASCADE" })
   @JoinTable({
     name: 'order_foods',
     joinColumn: {

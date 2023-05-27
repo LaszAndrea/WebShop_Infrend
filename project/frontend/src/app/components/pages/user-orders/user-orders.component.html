@@ -1,0 +1,25 @@
+<div class="container mt-5">
+    <h1 class="mb-5">Rendeléseim</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Megrendelés elküldve</th>
+          <th>Várható kiszállítási időpont</th>
+          <th>Kiszállítási hely</th>
+          <th>Rendelés állapota</th>
+          <th>Fizetendő összeg</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.createdAt | date:'yyyy.MM.dd. HH:mm' }}</td>
+          <td>{{ order.estDel | date:'yyyy.MM.dd. HH:mm' }}</td>
+          <td>{{ user.address }}</td>
+          <td *ngIf="order.status == 'NEW' && parseDate(order.estDel) > getCurrentDate()">Feldolgozás alatt</td>
+          <td *ngIf="order.status == 'DONE' || parseDate(order.estDel) < getCurrentDate()">Kiszállítva</td>
+          <td>{{ order.totalPrice | currency: 'Ft '}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

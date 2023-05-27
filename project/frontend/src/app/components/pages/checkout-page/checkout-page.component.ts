@@ -23,7 +23,11 @@ export class CheckoutPageComponent {
 
       const cart = cartService.getCart();
       this.order.items = cart.items;
-      this.order.totalPrice = cart.totalPrice;
+      if(cart.totalPrice > 5000){
+        this.order.totalPrice = cart.totalPrice*0.95;
+      }else{
+        this.order.totalPrice = cart.totalPrice;
+      }
 
     }
 
@@ -57,10 +61,11 @@ export class CheckoutPageComponent {
 
       this.orderService.createOrder(this.order).subscribe({
         next:()=>{
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/sent');
+          this.cartService.clearCart();
         },
         error:(errorResponse)=>{
-          this.toastrService.error(errorResponse.error, 'Valami nem jó');
+          this.toastrService.error(errorResponse.error, 'Valami hiba történt!');
         }
       })
 

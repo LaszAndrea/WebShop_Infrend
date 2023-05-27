@@ -15,4 +15,20 @@ export class OrderService {
     return this.http.post<any>(ORDER_CREATE_URL, order);
   }
 
+  deleteOrder(userId: string): Observable<any> {
+    return this.http.delete<any>(ORDERS_URL + '/' + userId);
+  }  
+
+  getOrder(): Observable<Order> {
+    return this.http.get<Order>(ORDERS_URL);
+  }
+
+  getOrdersByUserId(userId: string): Observable<Order[]> {
+    return this.http.get<Order[]>(ORDERS_URL + '/' + userId);
+  }
+
+  getOrderByUserId(userId: string): Observable<Order> {
+    return this.http.get<Order>(ORDERS_URL + '/' + userId);
+  }
+
 }

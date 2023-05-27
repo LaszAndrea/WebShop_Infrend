@@ -24,6 +24,6 @@ export class User {
   @Column()
   isAdmin: boolean;
 
-  @OneToMany(() => Order, order => order.user)
+  @OneToMany(() => Order, order => order.user,)
   orders: Order[];
 }

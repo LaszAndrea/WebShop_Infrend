@@ -9,4 +9,5 @@ export class Order{
     phone!: string;
     createdAt!: Date;
     status!: string;
+    estDel!: Date;
 }

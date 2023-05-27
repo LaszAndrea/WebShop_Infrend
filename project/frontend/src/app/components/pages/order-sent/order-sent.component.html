@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Rendelés megerősítése</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h1 class="mt-5">Rendelés megerősítése</h1>
+        <hr>
+
+        <h4>Kedves {{user.name}}!</h4>
+        <p>Köszönjük a rendelést! Az alábbi részletek szerint fogjuk feldolgozni a megrendelést:</p>
+
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Szállítási adatok:</h5>
+            <p class="card-text"><strong>Cím:</strong> {{user.address}}</p>
+            <p class="card-text"><strong>Összesen:</strong> {{currentOrder.totalPrice | currency: 'Ft '}}</p>
+            <p class="card-text"><strong>Szállítási idő:</strong> {{time}}</p>
+          </div>
+        </div>
+
+        <p class="mt-4">Kérjük, ellenőrizze a megadott adatokat. Amennyiben bármilyen hiba vagy kérdés merül fel, kérjük, lépjen kapcsolatba velünk.</p>
+
+        <div class="row">
+            <div class="col">
+              <div class="mt-3 mb-5">
+                <a routerLink="/orders" class="btn btn-primary">Rendelések</a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="mt-3" style="margin-left: 33%;">
+                <a (click)="deleteOrder()" class="btn btn-primary">Rendelés lemondása</a>
+              </div>
+            </div>
+        </div>          
+      </div>
+    </div>
+  </div>
+</body>
+</html>

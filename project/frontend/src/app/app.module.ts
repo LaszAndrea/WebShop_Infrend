@@ -20,6 +20,9 @@ import { CheckoutPageComponent } from './components/pages/checkout-page/checkout
 import { OrderItemsListComponent } from './components/partials/order-items-list/order-items-list.component';
 import { AddComponent } from './components/pages/add/add.component';
 import { UpdateComponent } from './components/pages/update/update.component';
+import { OrderSentComponent } from './components/pages/order-sent/order-sent.component';
+import { UserOrdersComponent } from './components/pages/user-orders/user-orders.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { UpdateComponent } from './components/pages/update/update.component';
     OrderItemsListComponent,
     AddComponent,
     UpdateComponent,
+    OrderSentComponent,
+    UserOrdersComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +51,7 @@ import { UpdateComponent } from './components/pages/update/update.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

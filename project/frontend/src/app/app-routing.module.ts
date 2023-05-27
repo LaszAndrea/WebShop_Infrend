@@ -8,6 +8,8 @@ import { RegisterPageComponent } from './components/pages/register-page/register
 import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
 import { AddComponent } from './components/pages/add/add.component';
 import { UpdateComponent } from './components/pages/update/update.component';
+import { OrderSentComponent } from './components/pages/order-sent/order-sent.component';
+import { UserOrdersComponent } from './components/pages/user-orders/user-orders.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -18,6 +20,8 @@ const routes: Routes = [
   {path: 'registration', component: RegisterPageComponent},
   {path: 'checkout', component: CheckoutPageComponent},
   {path: 'add', component: AddComponent},
+  {path: 'sent', component: OrderSentComponent},
+  {path: 'orders', component: UserOrdersComponent},
   {path: 'update/:id', component: UpdateComponent}
 ];
 

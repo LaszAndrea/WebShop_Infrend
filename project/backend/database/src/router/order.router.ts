@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source";
 //import auth from "../middlewares/auth.mid";
 import { User } from "../entity/User";
 import { Oven } from "../entity/Oven";
+import { addMinutes } from "date-fns";
 
 const router = Router();
 //router.use(auth);
@@ -17,65 +18,105 @@ router.post('/create', async(req:any, res:any) =>{
     const order: Order = req.body;
     const name = req.body.name;
     const foodLength = req.body.items.length;
-    
+
+    //megkeressük az éppen rendelni kívánó usert
     const user = await repositoryUser.findOne({ where: { name: name } });
 
+    //ha üres a kosár, akkor hibát küldünk vissza
     if(foodLength <= 0){
         res.status(400).send('A kosár üres');
         return;
     }
 
+    //ha van már rendelés leadva, akkor visszadobunk valamilyen hibát, 
+    //illetve ellenőrzöm, hogy van e már olyan rendelés aminek lejárt az ideje
+    const findOrder = await repository.find({ where: { user: { id: user.id } } });
+    for(let i=0; i<findOrder.length; i++){
+        if(findOrder[i].status == "NEW" && (new Date() < findOrder[i].estDel)){
+            res.status(400).send('Már volt leadva rendelés előzőleg, kérem várja meg a kiszállítását.');
+            return;
+        }else if(findOrder[i].status == "NEW" && (new Date() > findOrder[i].estDel)){
+            findOrder[i].status = "DONE";
+            await repository.save(findOrder[i]);
+        }
+    }
+
+    //létrehozzuk az éppen leadni kívánt rendelést
     const newOrder = order;
     newOrder.foods = [];
     newOrder.createdAt = new Date();
     newOrder.user = user;
 
-    let maxQuantity = 0;
-
-    for(let i=0; i<foodLength; i++){
-        maxQuantity += req.body.items[i].quantity;
+    //ha a totalprice nagyobb mint 5000, akkor kedvezményt adunk
+    if(newOrder.totalPrice > 5000){
+        newOrder.totalPrice = newOrder.totalPrice * 0.95;
     }
 
-    for(let i=0; i<maxQuantity; i++){
-        console.log(req.body.items[i].quantity);
-        let actualQuantity = req.body.items[i].quantity;
-
-        if(actualQuantity > 1){
-            for(let j=0; j<actualQuantity; j++){
-                newOrder.foods[i] = req.body.items[i].food;
-            }
-        }else{
-            newOrder.foods[i] = req.body.items[i].food;
-        }
+    //rendelni kívánt ételek elmentése
+    for(let i=0; i<req.body.items.length; i++){
+        newOrder.foods[i] = req.body.items[i].food;
     }
-
-    // Az aktív rendelések és sütők lekérdezése az adatbázisból
-    const ovens = await repositoryOven.find();
 
     // Az aktuális szabad sütők számának meghatározása
-    const availableOvens = ovens.filter((oven) => !oven.isBusy);
+    const ovens = await repositoryOven.find();
+    const availableOvens = ovens.filter((oven) => oven.busyUntil < new Date());
 
-    if(availableOvens.length >= newOrder.foods.length){
+    //elmentjük a preparation timeokat ezáltal tudjuk, hogy hány ételre kell
+    //lefoglalni a sütőket
+    const bakingTimes = [];
+    for(let i=0; i<req.body.items.length; i++){
+        if(req.body.items[i].quantity > 1){
+            for(let j=0; j < req.body.items[i].quantity; j++){
+                bakingTimes[j] = req.body.items[i].food.preparationTime;
+            }
+        }else{
+            bakingTimes[bakingTimes.length] = req.body.items[i].food.preparationTime;
+        }
+    }
 
-        for(let j=0; j<newOrder.foods.length; j++){
+    //ha több szabad sütő van, mint amennyit rendelni akarunk akkor egyértelmű a megoldás
+    if(availableOvens.length >= bakingTimes.length){
+
+        for(let j=0; j<bakingTimes.length; j++){
             const ovenIndex = j % availableOvens.length;
-            availableOvens[ovenIndex].isBusy = true;
-            availableOvens[ovenIndex].busySince = newOrder.createdAt;
+            availableOvens[ovenIndex].busyUntil = addMinutes(newOrder.createdAt, bakingTimes[j]);
         }
 
+        //mivel az összes ételt el tudják egyből készíteni, ezért meg kell keresni,
+        //melyik az amelyik a legtöbb időbe fog kerülni elkészíteni
+        let maxBakingTime = 0;
+        for(let i =0; i<bakingTimes.length; i++){
+            if(bakingTimes[i]>maxBakingTime){
+                maxBakingTime = bakingTimes[i];
+            }
+        }
+
+        newOrder.estDel = addMinutes(newOrder.createdAt, maxBakingTime + 20);
         await repositoryOven.save(availableOvens);
 
-        let maxPrepTime = 0;
+    }else{
 
-        for(let i=0; i<newOrder.foods.length; i++){
+        let lastItemDone = ovens[0].busyUntil;
 
-            if(newOrder.foods[i].preparationTime > maxPrepTime){
-                maxPrepTime = newOrder.foods[i].preparationTime;
+        for(let j=0; j<bakingTimes.length; j++){
+
+            let availableSoon = ovens[0].busyUntil;
+            let ovenIndex = 0;
+
+            for(let i=0; i<ovens.length; i++){
+                if(ovens[i].busyUntil < availableSoon){
+                    availableSoon = ovens[i].busyUntil;
+                    ovenIndex = i;
+                }
             }
+
+            ovens[ovenIndex].busyUntil = addMinutes(availableSoon, bakingTimes[j]);
+            lastItemDone = ovens[ovenIndex].busyUntil;
 
         }
 
-        console.log(newOrder.estDel);
+        newOrder.estDel = addMinutes(lastItemDone, 20);
+        await repositoryOven.save(ovens);
 
     }
 
@@ -83,5 +124,38 @@ router.post('/create', async(req:any, res:any) =>{
     res.send(newOrder);
 
 })
+
+router.get('/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const order = await repository.find({ where: { user: { id: userId } } });
+        res.send(order);
+    } catch (error) {
+        res.status(404).send('Rendelés nem található');
+    }
+});
+
+router.delete('/:userId', async (req, res) => {
+
+    const userId = req.params.userId;
+    const order = await repository.findOneOrFail({
+        where: {
+          user: { id: userId },
+          status: 'NEW'
+        }
+    });
+
+    try {
+        await repository.remove(order);
+        res.status(200).json('Rendelés sikeresen törölve.');
+    } catch (error) {
+      console.error('Rendelés törlése sikertelen:', error);
+      res.status(500).send('Hiba történt a rendelés törlése közben.');
+    }
+    
+});
+  
+
+
 
 export default router;
