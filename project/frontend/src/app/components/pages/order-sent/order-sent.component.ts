@@ -22,6 +22,11 @@ export class OrderSentComponent {
   currentOrder = new Order();
 
   ngOnInit() {
+
+    if(this.user.isAdmin){
+      this.router.navigateByUrl('/');
+    }
+
     this.orderService.getOrdersByUserId(this.user.id).subscribe(order => {
 
       for(let i=0; i<order.length; i++){

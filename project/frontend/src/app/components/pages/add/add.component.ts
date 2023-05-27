@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FoodService } from 'src/app/services/food.service';
+import { UserService } from 'src/app/services/user.service';
 import { Food } from 'src/app/shared/models/Food';
 
 @Component({
@@ -21,10 +22,14 @@ export class AddComponent {
     private formBuilder: FormBuilder,
     private foodService: FoodService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
+      if(!this.userService.currentUser.isAdmin){
+        this.router.navigateByUrl('/');
+      }
     this.addForm = this.formBuilder.group({
       name: ['', Validators.required],
       price: ['', Validators.required],

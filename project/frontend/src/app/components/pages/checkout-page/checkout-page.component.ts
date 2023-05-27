@@ -32,6 +32,9 @@ export class CheckoutPageComponent {
     }
 
     ngOnInit(): void{
+      if(this.userService.currentUser.isAdmin){
+        this.router.navigateByUrl('/');
+      }
       let {name, address, phone} = this.userService.currentUser;
       this.checkoutForm = this.formBuilder.group({
         name: [name, Validators.required],

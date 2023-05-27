@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
 import { Order } from 'src/app/shared/models/Order';
@@ -14,9 +15,12 @@ export class UserOrdersComponent {
   orders: Order[] = [];
   user: User = this.userService.currentUser;
 
-  constructor(private orderService: OrderService, private userService: UserService) { }
+  constructor(private orderService: OrderService, private userService: UserService, private router: Router) { }
 
   ngOnInit() {
+    if(this.userService.currentUser.isAdmin){
+      this.router.navigateByUrl('/');
+    }
     this.orderService.getOrdersByUserId(this.user.id).subscribe(
       (data) => {
         console.log(data);
