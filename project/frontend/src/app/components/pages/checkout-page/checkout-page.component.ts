@@ -37,7 +37,7 @@ export class CheckoutPageComponent {
       }
       let {name, address, phone} = this.userService.currentUser;
       this.checkoutForm = this.formBuilder.group({
-        name: [name, Validators.required],
+        name: [{value: name, disabled: true}, Validators.required],
         address: [address, Validators.required],
         phone: [phone, Validators.required]
       });
@@ -65,6 +65,8 @@ export class CheckoutPageComponent {
       this.orderService.createOrder(this.order).subscribe({
         next:()=>{
           this.router.navigateByUrl('/sent');
+          this.userService.currentUser.address = this.order.address;
+          this.userService.currentUser.name = this.order.name;
           this.cartService.clearCart();
         },
         error:(errorResponse)=>{

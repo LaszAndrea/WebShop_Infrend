@@ -14,7 +14,7 @@
         <tr *ngFor="let order of orders">
           <td>{{ order.createdAt | date:'yyyy.MM.dd. HH:mm' }}</td>
           <td>{{ order.estDel | date:'yyyy.MM.dd. HH:mm' }}</td>
-          <td>{{ user.address }}</td>
+          <td>{{ order.address }}</td>
           <td *ngIf="order.status == 'NEW' && parseDate(order.estDel) > getCurrentDate()">Feldolgozás alatt</td>
           <td *ngIf="order.status == 'DONE' || parseDate(order.estDel) < getCurrentDate()">Kiszállítva</td>
           <td>{{ order.totalPrice | currency: 'Ft '}}</td>

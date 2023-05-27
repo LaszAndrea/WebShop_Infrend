@@ -66,5 +66,9 @@ export class Order {
 
   @Column()
   estDel: Date;
+
+  @Column()
+  address: string;
+
 }
 

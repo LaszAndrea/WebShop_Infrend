@@ -107,11 +107,12 @@ router.post('/create', async(req:any, res:any) =>{
                 if(ovens[i].busyUntil < availableSoon){
                     availableSoon = ovens[i].busyUntil;
                     ovenIndex = i;
+                }else if(ovens[i].busyUntil > lastItemDone){
+                    lastItemDone = ovens[i].busyUntil;
                 }
             }
 
             ovens[ovenIndex].busyUntil = addMinutes(availableSoon, bakingTimes[j]);
-            lastItemDone = ovens[ovenIndex].busyUntil;
 
         }
 

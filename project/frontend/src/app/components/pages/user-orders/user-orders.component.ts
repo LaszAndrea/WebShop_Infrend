@@ -23,7 +23,6 @@ export class UserOrdersComponent {
     }
     this.orderService.getOrdersByUserId(this.user.id).subscribe(
       (data) => {
-        console.log(data);
         this.orders = data;
       },
       (error) => {

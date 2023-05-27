@@ -53,7 +53,6 @@ export class OrderSentComponent {
         this.router.navigateByUrl('/');
       },
       (errorResponse) => {
-        console.log(errorResponse);
         this.toastrService.error(errorResponse, 'Valami hiba történt!');
       }
     );
