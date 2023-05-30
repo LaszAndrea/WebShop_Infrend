@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { FoodService } from 'src/app/services/food.service';
+import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
 import { Food } from 'src/app/shared/models/Food';
 
@@ -21,6 +23,8 @@ export class UpdateComponent {
     private foodService: FoodService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private orderService: OrderService,
+    private toastrService: ToastrService,
     private userService: UserService
   ) {
 
@@ -46,9 +50,9 @@ export class UpdateComponent {
     
     this.updateForm = this.formBuilder.group({
       name: [this.food.name, Validators.required],
-      price: [this.food.price, Validators.required],
+      price: [this.food.price, [Validators.required, Validators.pattern(/^\d+$/)]],
       description: [this.food.description, [Validators.required, Validators.minLength(5)]],
-      preparationTime: [this.food.preparationTime, Validators.required],
+      preparationTime: [this.food.preparationTime, [Validators.required, Validators.pattern(/^\d+$/)]],
       imageUrl: [this.food.imageUrl, Validators.required],
     });
 
@@ -78,6 +82,18 @@ export class UpdateComponent {
     this.foodService.updateFood(this.food.id,this.food).subscribe(() => {
       this.router.navigate(['/']);
     });
+  }
+
+  deleteFood() {
+    this.foodService.deleteFood(this.food.id).subscribe(
+      () => {
+        this.toastrService.success('Étel sikeresen törölve.');
+        this.router.navigateByUrl('/');
+      },
+      (errorResponse) => {
+        this.toastrService.error(errorResponse, 'Valami hiba történt!');
+      }
+    );
   }
   
 

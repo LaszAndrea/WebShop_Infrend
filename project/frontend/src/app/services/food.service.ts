@@ -34,5 +34,10 @@ export class FoodService {
   updateFood(foodId: string, food: Food): Observable<any> {
     return this.http.put(FOODS_BY_ID_URL + foodId, food);
   }
+
+  deleteFood(foodId: string): Observable<Food> {
+    return this.http.delete<Food>(FOODS_URL + '/'  + foodId);
+  }
+
   
 }

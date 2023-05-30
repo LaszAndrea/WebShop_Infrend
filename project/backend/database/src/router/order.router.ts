@@ -1,13 +1,11 @@
 import { Router } from "express";
 import { Order } from "../entity/Order";
 import { AppDataSource } from "../data-source";
-//import auth from "../middlewares/auth.mid";
 import { User } from "../entity/User";
 import { Oven } from "../entity/Oven";
 import { addMinutes } from "date-fns";
 
 const router = Router();
-//router.use(auth);
 
 const repository = AppDataSource.getRepository(Order);
 const repositoryUser = AppDataSource.getRepository(User);

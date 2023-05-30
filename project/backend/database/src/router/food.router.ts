@@ -70,4 +70,24 @@ router.put('/:foodId', async (req, res) => {
   }
 });
 
+router.delete('/:foodId', async (req, res) => {
+
+  const foodId = req.params.foodId;
+  const food = await repository.findOneOrFail({
+      where: {
+        id: foodId
+      }
+  });
+
+  try {
+      await repository.remove(food);
+      res.status(200).json('Étel sikeresen törölve.');
+  } catch (error) {
+    console.error('Étel törlése sikertelen:', error);
+    res.status(500).send('Hiba történt a rendelés törlése közben.');
+  }
+  
+});
+
+
 export default router;
