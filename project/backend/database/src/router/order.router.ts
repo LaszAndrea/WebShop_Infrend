@@ -125,6 +125,7 @@ router.post('/create', async(req:any, res:any) =>{
 })
 
 router.get('/:userId', async (req, res) => {
+    
     const userId = req.params.userId;
     try {
         const order = await repository.find({ where: { user: { id: userId } } });
@@ -132,6 +133,7 @@ router.get('/:userId', async (req, res) => {
     } catch (error) {
         res.status(404).send('Rendelés nem található');
     }
+
 });
 
 router.delete('/:userId', async (req, res) => {

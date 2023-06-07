@@ -12,6 +12,7 @@ import { OrderSentComponent } from './components/pages/order-sent/order-sent.com
 import { UserOrdersComponent } from './components/pages/user-orders/user-orders.component';
 
 const routes: Routes = [
+
   {path:'', component:HomeComponent},
   {path: 'search/:searched', component:HomeComponent},
   {path: 'food/:id', component: PizzaPageComponent},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'sent', component: OrderSentComponent},
   {path: 'orders', component: UserOrdersComponent},
   {path: 'update/:id', component: UpdateComponent}
+  
 ];
 
 @NgModule({

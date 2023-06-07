@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class OrderService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createOrder(order: Order): Observable<any> {
     return this.http.post<any>(ORDER_CREATE_URL, order);

@@ -54,12 +54,14 @@ export class HomeComponent implements OnInit {
   }
 
   getPreparationTime(food: Food): Food {
+    
     if (food.name.toLowerCase().includes('pizza')) {
       food.preparationTime = 20;
       return food;
     } else {
       return food;
     }
+
   }
 
   get isAdmin(){

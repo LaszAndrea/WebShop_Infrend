@@ -44,6 +44,7 @@ router.post('/', (req: Request, res: Response) => {
     .catch((error) => {
       res.status(499).json({ error: 'Hiba történt az étel mentésekor.' });
     });
+    
 });
 
 router.put('/:foodId', async (req, res) => {

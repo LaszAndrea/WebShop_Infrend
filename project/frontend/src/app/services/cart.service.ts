@@ -47,8 +47,8 @@ export class CartService {
     cartItem.quantity = quantity;
     cartItem.price = quantity * cartItem.food.price;
 
-    cartItem.food.totalQuantity = quantity; // Frissítsd a cartItem food objektumának mennyiségét
-    cartItem.food.totalPrice = cartItem.food.price * quantity; // Frissítsd a cartItem food objektumának összesített árát
+    cartItem.food.totalQuantity = quantity;
+    cartItem.food.totalPrice = cartItem.food.price * quantity;
 
     this.setCartToLocalStorage();
 
@@ -57,7 +57,6 @@ export class CartService {
   clearCart(){
 
     this.cart = new Cart();
-
     this.setCartToLocalStorage();
 
   }
