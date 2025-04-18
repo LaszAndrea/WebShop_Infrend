@@ -49,10 +49,12 @@ Ez a repository az **Információs rendszerek** című egyetemi kurzus keretébe
 cd backend
 npm install
 npm start
-
+```
 ### Frontend
+```bash
 cd frontend
 npm install
 ng serve
+```
 
 A frontend ezután elérhető lesz a http://localhost:4200 címen.
